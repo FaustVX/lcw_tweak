@@ -2,30 +2,9 @@ on:
   push:
     tags:
       - "v*.*.*"
-  release:
 
 jobs:
-  Create_Zip:
-    if: github.event_name == 'push'
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Create Release
-        id: create_release
-        uses: nickatnight/releases-action@v5
-        with:
-          branch: main
-          name: ${{github.ref_name}}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   Upload_Release:
-    if: github.event_name == 'release'
     runs-on: ubuntu-latest
     name: Upload Release
     steps:
@@ -45,12 +24,6 @@ jobs:
         run: sudo apt-get install -y zip
       - name: Create zip file
         run: zip -r ${{steps.props.outputs.name}}.zip mod/
-      - name: Upload to release
-        uses: JasonEtco/upload-to-release@master
-        with:
-          args: "./${{steps.props.outputs.name}}.zip"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload to Mod Portal
         uses: mchangrh/factorio-mod-upload@v1
         with:

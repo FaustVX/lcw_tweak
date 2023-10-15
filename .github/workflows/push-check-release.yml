@@ -19,6 +19,7 @@ jobs:
         id: create_release
         uses: nickatnight/releases-action@v5
         with:
+          branch: main
           name: ${{github.ref_name}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

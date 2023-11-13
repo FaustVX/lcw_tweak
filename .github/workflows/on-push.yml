@@ -19,11 +19,13 @@ jobs:
         id: props
         with:
           path: mod/info.json
-          properties: "name"
+          properties: "[name, version]"
+      - name: rename mod folder
+        run: mv mod ${{steps.props.outputs.name}}_${{steps.props.outputs.version}}
       - name: Install zip
         run: sudo apt-get install -y zip
       - name: Create zip file
-        run: zip -r ${{steps.props.outputs.name}}.zip mod/
+        run: zip -r ${{steps.props.outputs.name}}.zip ${{steps.props.outputs.name}}_${{steps.props.outputs.version}}/
       - name: Upload to Mod Portal
         uses: mchangrh/factorio-mod-upload@v1
         with:
